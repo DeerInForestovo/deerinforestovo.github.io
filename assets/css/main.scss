@@ -55,3 +55,18 @@ $selection-background-color: unquote("{{ site.selection.background_color }}");
 @import "yat";
 
 @import "https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css";
+
+.gold {
+  color: #FFD700; /* 金色 */
+  font-weight: bold;
+}
+
+.silver {
+  color: #C0C0C0; /* 银色 */
+  font-weight: bold;
+}
+
+.bronze {
+  color: #CD7F32; /* 铜色 */
+  font-weight: bold;
+}
