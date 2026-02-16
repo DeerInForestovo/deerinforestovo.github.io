@@ -1,2 +1,9 @@
-在本地运行：
-bundle exec jekyll serve
+Run in wsl:
+
+hostname -I
+
+bundle exec jekyll serve --host 0.0.0.0
+
+And open in browser:
+
+172.23.133.106:4000
