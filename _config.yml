@@ -214,6 +214,8 @@ defaults:
 # Disqus comments
 # disqus:
 #   shortname: "Your Disqus username"
+#   enable_recommendations: false
+#   enable_comments: true
 
 # Gitment comments
 # gitment:
