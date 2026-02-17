@@ -1,9 +1,11 @@
 name: Github Pages
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master  # Here source code branch is `master`, it could be other branch
+    branches: ["master"]
+    paths-ignore:
+      - '*'
 
 jobs:
   build_and_deploy:
