@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c"> --><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>18661 Machine Learning ~ Notes | Liang Kuang DeerInForestovo</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="18661 Machine Learning ~ Notes">
+<meta name="author" content="DeerInForestovo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="CMU-18661 机器学习课程笔记">
+<meta property="og:description" content="CMU-18661 机器学习课程笔记">
+<link rel="canonical" href="/jekyll-theme-yat/notes/2026/02/17/ml-notes.html">
+<meta property="og:url" content="/jekyll-theme-yat/notes/2026/02/17/ml-notes.html">
+<meta property="og:site_name" content="Liang Kuang DeerInForestovo">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-02-17T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="18661 Machine Learning ~ Notes">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DeerInForestovo"},"dateModified":"2026-02-17T00:00:00+00:00","datePublished":"2026-02-17T00:00:00+00:00","description":"CMU-18661 机器学习课程笔记","headline":"18661 Machine Learning ~ Notes","mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll-theme-yat/notes/2026/02/17/ml-notes.html"},"url":"/jekyll-theme-yat/notes/2026/02/17/ml-notes.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="/assets/images/favicon.ico">
+  <link rel="canonical" href="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="/jekyll-theme-yat/feed.xml" title="Liang Kuang | DeerInForestovo">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$']],
+      displayMath: [['$$', '$$']],
+      processEscapes: true
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Liang Kuang | DeerInForestovo" src="/assets/images/favicon.ico" onerror="this.style.display='none'">
+  Liang Kuang | DeerInForestovo
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><!--
+
+
+
+
+-->
+          </div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/jekyll-theme-yat/assets/images/banners/article-ml-notes.jpg)"></div>
+        <img class="img-placeholder" src="/jekyll-theme-yat/assets/images/banners/article-ml-notes.jpg">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">18661 Machine Learning ~ Notes</h1>
+  <h2 class="post-subtitle">CMU-18661 机器学习课程笔记</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2026-02-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Feb 17, 2026
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+
+  <!---->
+
+</header>
+<div class="page-banner-img-source">
+          <a href="https://www.pixiv.net/artworks/139508420" target="_blank" title="Image Source">Image Source</a>
+        </div>
+
+      </div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+        document.dispatchEvent(new Event('theme-changed'));
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>Notes for CMU-18661 Introduction to Machine Learning for Engineers.</p>
+
+<h2 id="lecture-1-intro">Lecture 1: Intro</h2>
+
+<p><a href="https://www.andrew.cmu.edu/course/18-661/">Link</a> to the course website.</p>
+
+<ul>
+  <li>Homeworks (40%): Both math and programming problems</li>
+  <li>Miniexams (15%): Two during the semester</li>
+  <li>Midterm Exam (15%): Linear and Logistic Regression, Naive Bayes, SVMs (subject to change)</li>
+  <li>Final Exam (25%): Everything else (Nearest Neighbors, Neural Networks, Decision Trees, Boosting, Clustering, PCA, etc.), plus pre-midterm topics (subject to change)</li>
+  <li>Gradescope Quizzes (5%): Short multiple-choice question quizzes conducted in random (possibly all) lectures to encourage class attendance and attention. We will take the best 10 quiz scores.</li>
+</ul>
+
+<h2 id="lecture-2-mle--map">Lecture 2: MLE &amp; MAP</h2>
+
+<p>Pending…</p>
+
+<h2 id="lecture-3-4-linear-regression">Lecture 3-4: Linear Regression</h2>
+
+<h3 id="svd-decomposition">SVD Decomposition:</h3>
+
+<p>$$
+A = U\Sigma V^{\top}
+$$</p>
+
+<p>$U\in\mathbb{R}^{m\times m}$ and $V\in\mathbb{R}^{n\times n}$ are orthogonal matrices</p>
+
+<p>$\Sigma\in\mathbb{R}^{m\times n}$ is a diagonal matrix with singular values $\sigma_1\geq\sigma_2\geq\cdots\geq\sigma_r&gt;0$ on the diagonal, where $r$ is the rank of $A$.</p>
+
+<p>The squared singular values $\sigma_i^2$ are the eigenvalues of $A^{\top}A$ and $AA^{\top}$.</p>
+
+<p>$V$ is the right singular vectors of $A$, as well as the eigenvectors of $A^{\top}A$.</p>
+
+<p>$U$ is the left singular vectors of $A$, as well as the eigenvectors of $AA^{\top}$.</p>
+
+<p>Proof:</p>
+
+<p>$$
+\begin{aligned}
+A^{\top}A&amp;=V\Sigma^{\top} U^{\top} U\Sigma V^{\top}\\ <br>
+&amp;=V\Sigma^{\top} \Sigma V^{\top}\\ <br>
+&amp;=V\begin{bmatrix}\sigma_1^2 &amp; &amp; \\ &amp; \ddots &amp; \\ &amp; &amp; \sigma_r^2\end{bmatrix}V^{\top}
+\end{aligned}
+$$</p>
+
+<p>Similar for others.</p>
+
+<h3 id="linear-regression">Linear Regression:</h3>
+
+<p>Setup:</p>
+
+<ul>
+  <li>Input: $\mathbf{x}\in\mathbb{R}^D$</li>
+  <li>Output: $y\in\mathbb{R}$</li>
+  <li>Model: $f(\mathbf{x})=w_0+\mathbf{w}^{\top}\mathbf{x}=\widetilde{\mathbf{w}}^{\top}\widetilde{\mathbf{x}}$</li>
+  <li>Training data: $\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$</li>
+</ul>
+
+<p>Residual Sum of Squares (RSS):</p>
+
+<p>$$
+\text{RSS}(\mathbf{\widetilde{w}})=\sum_{n=1}^N(y_n-\mathbf{\widetilde{w}}^{\top}\mathbf{\widetilde{x}}_n)^2
+$$</p>
+
+<p>For $D=1$:</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial RSS}{\partial w_0} &amp;= -2\sum_{n=1}^N\left(y_n-(w_0+w_1x_n)\right)=0\\ <br>
+\frac{\partial RSS}{\partial w_1} &amp;= -2\sum_{n=1}^N\left(y_n-(w_0+w_1x_n)\right)x_n=0\\ <br>
+\therefore\sum y_n &amp;= N w_0 + w_1 \sum x_n,\quad\sum y_n x_n = w_0 \sum x_n + w_1 \sum x_n^2\\ <br>
+\therefore w_1^* &amp;= \frac{\sum (x_n-\bar{x})(y_n-\bar{y})}{\sum (x_n-\bar{x})^2},\quad w_0^* = \bar{y} - w_1^* \bar{x}
+\end{aligned}
+$$</p>
+
+<p>For $D&gt;1$:</p>
+
+<p>$$
+\begin{aligned}
+RSS(\widetilde{\mathbf{w}}) &amp;= \sum_{n=1}^N (y_n - \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n)^2\\ <br>
+&amp;=\sum_n(y_n-\widetilde{\mathbf{w}}^{\top}\widetilde{\mathbf{x}}_n)(y_n-\widetilde{\mathbf{x}}_n^{\top}\widetilde{\mathbf{w}})\\ <br>
+&amp;=\sum_n(- 2 y_n \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n + \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n \widetilde{\mathbf{x}}_n^{\top} \widetilde{\mathbf{w}}) + \text{const}\\ <br>
+&amp;=\widetilde{\mathbf{w}}^{\top} \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right) \widetilde{\mathbf{w}} - 2 \left(\widetilde{\mathbf{X}}^{\top}y\right) \widetilde{\mathbf{w}} + \text{const}\\ <br>
+\text{Set}\quad\nabla_{\widetilde{\mathbf{w}}} RSS &amp;= 2 \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right) \widetilde{\mathbf{w}} - 2 \left(\widetilde{\mathbf{X}}^{\top}y\right) = 0\\ <br>
+\text{Least Mean Squares solution}\\ \\quad\widetilde{\mathbf{w}}^{\text{LMS}} &amp;= \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right)^{-1} \left(\widetilde{\mathbf{X}}^{\top}y\right)
+\end{aligned}
+$$</p>
+
+<h3 id="why-minimize-rss">Why minimize RSS?</h3>
+
+<p>Noisy observation model:</p>
+
+<p>$$
+Y=w_0+w_1X+\eta,\quad \eta\sim\mathcal{N}(0,\sigma^2)\quad\rightarrow\quad Y\sim\mathcal{N}(w_0+w_1x,\sigma^2)
+$$</p>
+
+<p>Conditional Likelihood:</p>
+
+<p>$$
+P(y_n|\mathbf{x}_n) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y_n - (w_0 + w_1 x_n))^2}{2\sigma^2}\right)
+$$</p>
+
+<p>Log-Likelihood of training data:</p>
+
+<p>$$
+\begin{aligned}
+\log P(\mathcal{D})&amp;=\log\prod_{n=1}^N P(y_n|\mathbf{x}_n)\\ <br>
+&amp;=\sum_{n=1}^N \log \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y_n - w_0 - w_1 x_n)^2}{2\sigma^2}\right)\\ <br>
+&amp;=-\frac{N}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{n=1}^N (y_n - w_0 - w_1 x_n)^2\\ <br>
+\end{aligned}
+$$</p>
+
+<p>Maximize over $w_0$ and $w_1$: $\max \log P(\mathcal{D})\leftrightarrow \min \text{RSS}$</p>
+
+<ul>
+  <li>This gives a solid footing to our intuition: minimizing $RSS(\widetilde{\mathbf{w}})$ is a sensible thing based on reasonable modeling assumptions.</li>
+</ul>
+
+<p>Maximize over $\sigma^2$:</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial \log P(\mathcal{D})}{\partial \sigma^2} &amp;= -\frac{N}{2\sigma^2} + \frac{1}{2\sigma^4} \sum_{n=1}^N (y_n - w_0 - w_1 x_n)^2\\ <br>
+&amp;= -\frac{N}{2\sigma^2} + \frac{1}{2\sigma^4} \text{RSS}(\widetilde{\mathbf{w}})\\ <br>
+\therefore \sigma^{2*} &amp;= \frac{1}{N} \text{RSS}(\widetilde{\mathbf{w}})
+\end{aligned}
+$$</p>
+
+<ul>
+  <li>Estimating $\sigma^{2*}$ tells us how much noise there is in our predictions. For example, it allows us to place confidence intervals around our predictions.</li>
+</ul>
+
+<h3 id="gradient-descent-method">Gradient Descent Method:</h3>
+
+<p>pending…</p>
+
+<h2 id="lecture-5-overfitting">Lecture 5: Overfitting</h2>
+
+<p>Pending…</p>
+
+<h2 id="lecture-6-naive-bayes">Lecture 6: Naive Bayes</h2>
+
+<p>Naive Bayes:</p>
+
+<p>$$
+P(y|\mathbf{x}) = \frac{P(\mathbf{x}|y)P(y)}{P(\mathbf{x})}
+$$</p>
+
+<p>Spam example:</p>
+
+<p>$$
+\begin{aligned}
+P(\mathbf{X}=\mathbf{x}, Y=c)&amp;=P(Y=c)P(X=x|Y=c) \\ <br>
+&amp;=P(Y=c)\prod_{k=1}^K P(\text{word}_k|Y=c)^{x_k} \\ <br>
+&amp;=\pi_c\prod_{k=1}^K \theta_{c,k}^{x_k},
+\end{aligned}
+$$</p>
+
+<p>where $\pi_c = P(Y = c)$ is the prior probability of class $c$, $x_k$ is the number of occurrences of the $k$th word, and $ \theta _{c,k} = P(\text{word }_k|Y = c) $ is the weight of the $k$th word for the $c$th class.</p>
+
+<p>Training Data:</p>
+
+<p>$$
+\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N=\{(\{x_{n,k}\}_{k=1}^K,y_n)\}_{n=1}^N
+$$</p>
+
+<p>Goal:</p>
+
+<p>Learn $\pi_c$ and $\theta_{c,k}$ from the training data $\mathcal{D}$.</p>
+
+<p>Log-Likelihood:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L}(\pi, \theta) &amp;= \sum_{n=1}^N \log P(\mathbf{x}_n, y_n)\\ <br>
+&amp;= \sum_{n=1}^N \log \left(\pi_{y_n} \prod_{k=1}^K \theta_{y_n,k}^{x_{n,k}}\right)\\ <br>
+&amp;= \sum_{n=1}^N \log \pi_{y_n} + \sum_{n=1}^N \sum_{k=1}^K x_{n,k} \log \theta_{y_n,k}
+\end{aligned}
+$$</p>
+
+<p>Optimization:</p>
+
+<p>Note that $\pi_c$ and $\theta_{c,k}$ can be optimized separately.</p>
+
+<p>$$
+\begin{aligned}
+\pi_c^* &amp;= \frac{N_c}{N}\quad\rightarrow\text{see Lecture 2}\\ <br>
+\theta_{c,k}^* &amp;= \frac{\sum_{n=1}^N x_{n,k} \mathbb{I}(y_n = c)}{\sum_{n=1}^N \sum_{k=1}^K x_{n,k} \mathbb{I}(y_n = c)}\\ <br>
+&amp;=\frac{\text{# word k shows up in data for class c}}{\text{# words shows up in data for class c}}\quad\rightarrow\text{see Lecture 2}
+\end{aligned}
+$$</p>
+
+<p>Classification:</p>
+
+<p>$$
+\begin{aligned}
+y^* &amp;= \arg\max_c P(y=c|\mathbf{x})\\ <br>
+&amp;= \arg\max_c P(\mathbf{x}|y=c)P(y=c)\\ <br>
+&amp;= \arg\max_c \pi_c \prod_{k=1}^K \theta_{c,k}^{x_k}\\ <br>
+&amp;= \arg\max_c \log \pi_c + \sum_{k=1}^K x_k \log \theta_{c,k}
+\end{aligned}
+$$</p>
+
+<p>Problem: if $\theta_{c,k}^* = 0$ for some $c$ and $k$, then any test document containing the $k$th word will be classified as not belonging to class $c$.</p>
+
+<p>Solution: Laplace Smoothing</p>
+
+<p>$$
+\theta_{c,k}^* = \frac{\sum_{n=1}^N x_{n,k} \mathbb{I}(y_n = c) + \alpha}{\sum_{n=1}^N \sum_{k=1}^K x_{n,k} \mathbb{I}(y_n = c) + K\alpha}
+$$</p>
+
+<h2 id="lecture-7-logistic-regression">Lecture 7: Logistic Regression</h2>
+
+<p>Recall for Naive Bayes:</p>
+
+<p>$$
+y^* = \arg\max_c \log \pi_c + \sum_{k=1}^K x_k \log \theta_{c,k}
+$$</p>
+
+<p>For binary classification, the label is based on the sign of</p>
+
+<p>$$
+\log\pi_1+\sum_{k=1}^K x_k \log \theta_{1,k} - \log\pi_2 - \sum_{k=1}^K x_k \log \theta_{2,k},
+$$</p>
+
+<p>which is a linear function of the input features $\mathbf{x}$.</p>
+
+<h3 id="logistic-regression">Logistic Regression:</h3>
+
+<p>Setup:</p>
+
+<ul>
+  <li>Input: $\mathbf{x}\in\mathbb{R}^D$</li>
+  <li>Output: $y\in\{0,1\}$</li>
+  <li>Training data: $\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$</li>
+  <li>Model: $P(y=1|\mathbf{x})=\sigma(\mathbf{w}^{\top}\mathbf{x})=g(\mathbf{x})$, where $\sigma(z)=\frac{1}{1+e^{-z}}$ is the sigmoid function</li>
+</ul>
+
+<p>Likelihood:</p>
+
+<p>$$
+\begin{aligned}
+p(y_n|\mathbf{x}_n;\mathbf{w})&amp;=g(\mathbf{x}_n)^{y_n}(1-g(\mathbf{x}_n))^{1-y_n}\\ <br>
+\mathcal{L}(\mathbf{w})&amp;=\prod_{n=1}^N p(y_n|\mathbf{x}_n;\mathbf{w})\\ <br>
+\log \mathcal{L}(\mathbf{w})&amp;=\sum_{n=1}^N \left(y_n \log g(\mathbf{x}_n) + (1-y_n) \log (1-g(\mathbf{x}_n))\right)
+\end{aligned}
+$$</p>
+
+<p>We use the negative log-likelihood, which is also called the <strong>cross-entropy loss</strong>:</p>
+
+<p>$$
+\varepsilon(\mathbf{w}) = -\log \mathcal{L}(\mathbf{w}) = -\sum_{n=1}^N \left(y_n \log g(\mathbf{x}_n) + (1-y_n) \log (1-g(\mathbf{x}_n))\right)
+$$</p>
+
+<p>Gradient:</p>
+
+<p>$$
+\begin{aligned}
+\frac{d\sigma(z)}{dz} &amp;= \sigma(z)(1-\sigma(z))\\ <br>
+\therefore \nabla_{\mathbf{w}} \varepsilon(\mathbf{w}) &amp;= -\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} \nabla_{\mathbf{w}} g(\mathbf{x}_n) + (1-y_n) \frac{-1}{1-g(\mathbf{x}_n)} \nabla_{\mathbf{w}} g(\mathbf{x}_n)\right)\\ <br>
+&amp;=-\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} - (1-y_n) \frac{1}{1-g(\mathbf{x}_n)}\right) \nabla_{\mathbf{w}} g(\mathbf{x}_n)\\ <br>
+&amp;=-\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} - (1-y_n) \frac{1}{1-g(\mathbf{x}_n)}\right) g(\mathbf{x}_n)(1-g(\mathbf{x}_n)) \mathbf{x}_n\\ <br>
+&amp;=-\sum_{n=1}^N \left(y_n - g(\mathbf{x}_n)\right) \mathbf{x}_n\\ <br>
+&amp;=\sum_{n=1}^N \left(g(\mathbf{x}_n) - y_n\right) \mathbf{x}_n,
+\end{aligned}
+$$</p>
+
+<p>where $\left(g(\mathbf{x}_n) - y_n\right)$ is the training error for the $n$th training example.</p>
+
+<p>Training:</p>
+
+<p>pending… (page 31)</p>
+
+<h3 id="non-linear-decision-boundary">Non-linear Decision Boundary:</h3>
+
+<p>Solution: High-dimensional feature space (which increases the risk of overfitting, so we need to) add regularization.</p>
+
+<h3 id="classification-metric">Classification Metric:</h3>
+
+<ul>
+  <li>True Positive (TP): number of positive examples correctly classified as positive</li>
+  <li>False Positive (FP): number of negative examples incorrectly classified as positive</li>
+  <li>True Negative (TN): number of negative examples correctly classified as negative</li>
+  <li>False Negative (FN): number of positive examples incorrectly classified as negative</li>
+  <li>Sensitivity (Recall): $\frac{TP}{TP + FN}$, the proportion of positive examples that are correctly classified as positive</li>
+  <li>Specificity: $\frac{TN}{TN + FP}$, the proportion of negative examples that are correctly classified as negative</li>
+  <li>Precision: $\frac{TP}{TP + FP}$, the proportion of positive predictions that are correct</li>
+</ul>
+
+<p><strong>Receiver Operating Characteristic (ROC) Curve:</strong> plots the true positive rate (sensitivity) against the false positive rate (1-specificity) at various threshold settings.</p>
+
+<p><strong>AUROC:</strong> the area under the ROC curve, which measures the overall performance of a binary classifier. A higher AUROC indicates better performance, with a value of $1$ representing a perfect classifier and a value of $0.5$ representing a random classifier.</p>
+
+<h2 id="lecture-8-multiclass-logistic-regression">Lecture 8: Multiclass Logistic Regression</h2>
+
+<p>Solution: Softmax of Sigmoid</p>
+
+<h2 id="lecture-9-10-support-vector-machines-svm">Lecture 9-10: Support Vector Machines (SVM)</h2>
+
+<p>Advantages of SVM</p>
+
+<ol>
+  <li>Maximizes distance of training points from the boundary.</li>
+  <li>Only requires a subset of the training points.</li>
+  <li>Is less sensitive to outliers.</li>
+  <li>Scales better with high-dimensional data.</li>
+  <li>Generalizes well to many nonlinear models.</li>
+</ol>
+
+<p>Idea: Maximize the margin between the decision boundary and the training points.</p>
+
+<p>Distance from a point $\mathbf{x}$ to the decision boundary $\mathbf{w}^{\top}\mathbf{x} + w_0 = 0$:</p>
+
+<p>$$
+d_{\mathcal{H}}(\mathbf{x}) = \frac{|\mathbf{w}^{\top}\mathbf{x} + w_0|}{\|\mathbf{w}\|_2}
+$$</p>
+
+<p>To remove the absolute value, we use $y = +1$ to represent positive label and $y = -1$ for negative label, then we have $(\mathbf{w}^{\top}\mathbf{x} + w_0)$ and the label $y$ must have the same sign. So we get</p>
+
+<p>$$
+d_{\mathcal{H}}(\mathbf{x}) = \frac{y(\mathbf{w}^{\top}\mathbf{x} + w_0)}{\|\mathbf{w}\|_2}\\ <br>
+\text{MARGIN}(\mathbf{w}, w_0) = \min_{n} d_{\mathcal{H}}(\mathbf{x}_n)
+$$</p>
+
+<p>To solve the SVM, we want to <strong>maximize</strong> the margin.</p>
+
+<p>We can <strong>scale</strong> $\mathbf{w}$ and $w_0$ by any positive constant without changing the decision boundary, so we can set $\text{MARGIN}(\mathbf{w}, w_0) = 1$, which gives us the following optimization problem:</p>
+
+<p>$$
+\max_{\mathbf{w}, w_0} \text{MARGIN}(\mathbf{w}, w_0) = \max_{\mathbf{w}, w_0} \frac{1}{\|\mathbf{w}\|_2} \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1, \forall n
+$$</p>
+
+<p>Which is further equivalent to:</p>
+
+<p>$$
+\min_{\mathbf{w}, w_0} \frac{1}{2}\|\mathbf{w}\|_2^2 \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1, \forall n
+$$</p>
+
+<p>SVM is called a max margin (or large margin) classifier. The constraints are called large margin constraints.</p>
+
+<h3 id="soft-margin-svm">Soft Margin SVM:</h3>
+
+<p>Problem: Not fully linear separable data?</p>
+
+<p>Solution: Slack variable</p>
+
+<p>$$
+\xi_n \geq 0 \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n, \forall n
+$$</p>
+
+<p>Which gives us the following optimization problem:</p>
+
+<p>$$
+\begin{aligned}
+\min_{\mathbf{w}, w_0, \xi} \frac{1}{2}\|\mathbf{w}\|_2^2 + C \sum_{n=1}^N \xi_n \quad\text{s.t.}\quad &amp;y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n, \forall n\\ <br>
+&amp;\xi_n \geq 0, \forall n
+\end{aligned}
+$$</p>
+
+<p>Where $C$ is a hyperparameter that controls the trade-off between maximizing the margin and minimizing the classification error (same idea as the regularization parameter in logistic regression).</p>
+
+<p>Hinge Loss Form:</p>
+
+<p>We want to extract the slack variable $\xi_n$ from the constraints, which gives us:</p>
+
+<p>$$
+y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n \leftrightarrow \xi_n \geq \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0))
+$$</p>
+
+<p>By setting $\lambda = \frac{1}{C}$, we can rewrite the optimization problem as:</p>
+
+<p>$$
+\min_{\mathbf{w}, w_0} \sum_{n=1}^N \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0)) + \frac{\lambda}{2}\|\mathbf{w}\|_2^2
+$$</p>
+
+<p>The first term is called the <strong>hinge loss</strong>. This can be optimized using gradient descent. There is no penalty for points that are correctly classified and outside the margin, a linear penalty for points that are correctly classified but inside the margin, and a linear penalty for points that are misclassified.</p>
+
+<h3 id="dual-form">Dual Form:</h3>
+
+<p>Optimization problem:</p>
+
+<p>$$
+\begin{aligned}
+\min_{\mathbf{w}, w_0} \sum_{n=1}^N \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0)) + \frac{\lambda}{2}\|\mathbf{w}\|_2^2
+\end{aligned}
+$$</p>
+
+<p>Restrictions (canonical form):</p>
+
+<p>$$
+\begin{aligned}
+-\xi_n &amp;\leq 0, \forall n\\ <br>
+1-y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) - \xi_n &amp;\leq 0, \forall n
+\end{aligned}
+$$</p>
+
+<p>Lagrangian:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L}(\mathbf{w}, w_0, {\xi_n}, {\alpha_n}, {\lambda_n}) &amp;= C\sum_{n=1}^N \xi_n + \frac{1}{2}\|\mathbf{w}\|_2^2 + \sum_{n=1}^N \lambda_n (-\xi_n) + \sum_{n=1}^N \alpha_n (1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) - \xi_n)\\ <br>
+\end{aligned}
+$$</p>
+
+<p>under the constraints $\alpha_n \geq 0$ and $\lambda_n \geq 0$ for all $n$.</p>
+
+<p>Goal: $\min_{\mathbf{w}, w_0, \xi_n} \max_{\alpha_n \geq 0, \lambda_n \geq 0}\mathcal{L}(\mathbf{w}, w_0, {\xi_n}, {\alpha_n}, {\lambda_n})$</p>
+
+<p>Idea: If we break the constraints, then the unlimited $\alpha_n$ and $\lambda_n$ will make the Lagrangian go to infinity.</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial \mathbf{w}} &amp;= \mathbf{w} - \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n = 0 &amp;\rightarrow \mathbf{w} = \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n\\ <br>
+\frac{\partial \mathcal{L}}{\partial w_0} &amp;= -\sum_{n=1}^N \alpha_n y_n = 0 &amp;\rightarrow \sum_{n=1}^N \alpha_n y_n = 0\\ <br>
+\frac{\partial \mathcal{L}}{\partial \xi_n} &amp;= C - \lambda_n - \alpha_n = 0 &amp;\rightarrow \lambda_n = C - \alpha_n\rightarrow \alpha_n \leq C
+\end{aligned}
+$$</p>
+
+<p>Features:</p>
+
+<ul>
+  <li>Independent of the size d of x: <strong>SVM scales better for high-dimensional features.</strong>
+</li>
+  <li>May seem like a lot of optimization variables when N is large, but many of the $\alpha_n$ become zero. $\alpha_n$ is non-zero only if the nth point is a support vector. <strong>SVM only depends on a subset of the training points (support vectors).</strong>
+</li>
+</ul>
+
+<p>$\alpha_n&lt;C$ only when $\xi_n=0$, pending… (page 62)</p>
+
+<p>Learning:</p>
+
+<p>$$
+\mathbf{w} = \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n
+$$</p>
+
+<p>For $(\mathcal{x}_n,y_n)$ such that $0&lt;\alpha_n&lt;C$, we have</p>
+
+<p>$$
+\begin{aligned}
+y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) &amp;= 1\\ <br>
+w_0 &amp;= y_n - \mathbf{w}^{\top}\mathbf{x}_n\\ <br>
+&amp;= y_n - \sum_{m=1}^N \alpha_m y_m \mathbf{x}_m^{\top} \mathbf{x}_n
+\end{aligned}
+$$</p>
+
+<h3 id="kernel-svm">Kernel SVM:</h3>
+
+<p>Similar to the linear regression case, we can use a non-linear basis function $\phi(\mathbf{x})$ to map the input features into a higher-dimensional space. The optimization problem becomes:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L} &amp;= C\sum_{n=1}^N \xi_n + \frac{1}{2}\|\mathbf{w}\|_2^2 + \sum_{n=1}^N \lambda_n (-\phi(\xi_n)) + \sum_{n=1}^N \alpha_n (1 - y_n(\mathbf{w}^{\top}\phi(\mathbf{x}_n) + w_0) - \xi_n)\\ <br>
+&amp;=\frac{1}{2}||\mathbf{w}||_2^2 - \sum \alpha_n y_n \mathbf{w}^{\top} \phi(\mathbf{x}_n) + \sum \alpha_n\quad\text{(Other terms sum up to zero)}\\ <br>
+&amp;=\sum \alpha_n -\frac12 \sum_{i,j} \alpha_i \alpha_j y_i y_j \phi(\mathbf{x}_i)^{\top} \phi(\mathbf{x}_j)\quad\text{(Substitute $\mathbf{w}=\sum \alpha_n y_n \phi(\mathbf{x}_n)$)}\\ <br>
+&amp;=\sum \alpha_n -\frac12 \sum_{i,j} \alpha_i \alpha_j y_i y_j k(\mathbf{x}_i, \mathbf{x}_j)\quad\text{(Define $k(\mathbf{x}_i, \mathbf{x}_j) = \phi(\mathbf{x}_i)^{\top} \phi(\mathbf{x}_j)$)}
+\end{aligned}
+$$</p>
+
+<p>where $k(\mathbf{x}_i, \mathbf{x}_j)$ is called the <strong>kernel function</strong>.</p>
+
+<p>$k$ is a valid kernel function if it is symmetric and positive semi-definite. Some popular examples:</p>
+
+<ul>
+  <li>Dot product kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top} \mathbf{x}_j$</li>
+  <li>Dot product with positive-definite matrix: $k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top} A \mathbf{x}_j$</li>
+  <li>Polynomial kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = (\mathbf{x}_i^{\top} \mathbf{x}_j + 1)^d,d\in\mathbb{Z}^+$</li>
+  <li>Radial basis function (RBF) kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \|\mathbf{x}_i - \mathbf{x}_j\|^2),\gamma&gt;0$</li>
+</ul>
+
+<p>Note that we do not need to know the explicit form of $\phi(\mathbf{x})$ to compute $k(\mathbf{x}_i, \mathbf{x}_j)$, which allows us to work with very high-dimensional feature spaces without incurring a large computational cost. This is called the <strong>kernel trick</strong>.</p>
+
+<p>But how do we predict?</p>
+
+<p>$$
+\begin{aligned}
+y &amp;= \text{sign}(\mathbf{w}^{\top}\phi(\mathbf{x}) + w_0)\\ <br>
+&amp;=\text{sign}\left(\sum_{n=1}^N \alpha_n y_n
+\phi(\mathbf{x}_n)^{\top} \phi(\mathbf{x}) + w_0\right)\\ <br>
+&amp;=\text{sign}\left(\sum_{n=1}^N \alpha_n y_n k(\mathbf{x}_n, \mathbf{x}) + w_0\right)
+\end{aligned}
+$$</p>
+
+<p>pending…</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/notes/2025/09/26/cmu-notes.html" title="My Course Notes in CMU (2025 Fall)">
+          <div>My Course Notes in CMU (2025 Fall)</div>
+        </a><span></span>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/notes/2025/09/26/cmu-notes.html" title="My Course Notes in CMU (2025 Fall)">
+            My Course Notes in CMU (2025 Fall)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/notes/2026/02/17/ml-notes.html" title="18661 Machine Learning ~ Notes">
+            18661 Machine Learning ~ Notes<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="top-post">
+          <a class="post-link" href="/jekyll-theme-yat/article/2025/02/28/fei-yue.html" title="My application experience">
+            My application experience<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="top-post">
+          <a class="post-link" href="/jekyll-theme-yat/article/2025/08/27/who-am-i.html" title="Who am I?">
+            Who am I?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2026 DeerInForestovo</div>
+
+      <div>
+        Want to provide feedback or get in touch?  
+        You can reach me via
+        <a href="https://github.com/DeerInForestovo/deerinforestovo.github.io/issues" target="_blank">GitHub Issues</a>,
+        <a href="https://www.linkedin.com/in/liangkuang-cmuece" target="_blank">LinkedIn</a>,
+        or email me at <a href="mailto:liangk@andrew.cmu.edu">liangk@andrew.cmu.edu</a>.
+      </div>
+
+      <div>
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="https://jekyllrb.com/">Jekyll</a> &amp;
+        <a title="Yat, yet another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.
+      </div>
+
+      <div class="footer-col rss-subscribe">
+        Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html><html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    AOS.init();
+  });
+</script>
+</html>

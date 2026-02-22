@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/jekyll-theme-yat/feed.xml" rel="self" type="application/atom+xml" /><link href="/jekyll-theme-yat/" rel="alternate" type="text/html" /><updated>2026-02-22T21:49:31+00:00</updated><id>/jekyll-theme-yat/feed.xml</id><title type="html">Liang Kuang | DeerInForestovo</title><subtitle>DeerInForestovo&apos;s Blog | 林空鹿饮溪的博客</subtitle><author><name>DeerInForestovo</name></author><entry><title type="html">18661 Machine Learning ~ Notes</title><link href="/jekyll-theme-yat/notes/2026/02/17/ml-notes.html" rel="alternate" type="text/html" title="18661 Machine Learning ~ Notes" /><published>2026-02-17T00:00:00+00:00</published><updated>2026-02-17T00:00:00+00:00</updated><id>/jekyll-theme-yat/notes/2026/02/17/ml-notes</id><content type="html" xml:base="/jekyll-theme-yat/notes/2026/02/17/ml-notes.html"><![CDATA[<p>Notes for CMU-18661 Introduction to Machine Learning for Engineers.</p>
+
+<h2 id="lecture-1-intro">Lecture 1: Intro</h2>
+
+<p><a href="https://www.andrew.cmu.edu/course/18-661/">Link</a> to the course website.</p>
+
+<ul>
+  <li>Homeworks (40%): Both math and programming problems</li>
+  <li>Miniexams (15%): Two during the semester</li>
+  <li>Midterm Exam (15%): Linear and Logistic Regression, Naive Bayes, SVMs (subject to change)</li>
+  <li>Final Exam (25%): Everything else (Nearest Neighbors, Neural Networks, Decision Trees, Boosting, Clustering, PCA, etc.), plus pre-midterm topics (subject to change)</li>
+  <li>Gradescope Quizzes (5%): Short multiple-choice question quizzes conducted in random (possibly all) lectures to encourage class attendance and attention. We will take the best 10 quiz scores.</li>
+</ul>
+
+<h2 id="lecture-2-mle--map">Lecture 2: MLE &amp; MAP</h2>
+
+<p>Pending…</p>
+
+<h2 id="lecture-3-4-linear-regression">Lecture 3-4: Linear Regression</h2>
+
+<h3 id="svd-decomposition">SVD Decomposition:</h3>
+
+<p>$$
+A = U\Sigma V^{\top}
+$$</p>
+
+<p>$U\in\mathbb{R}^{m\times m}$ and $V\in\mathbb{R}^{n\times n}$ are orthogonal matrices</p>
+
+<p>$\Sigma\in\mathbb{R}^{m\times n}$ is a diagonal matrix with singular values $\sigma_1\geq\sigma_2\geq\cdots\geq\sigma_r&gt;0$ on the diagonal, where $r$ is the rank of $A$.</p>
+
+<p>The squared singular values $\sigma_i^2$ are the eigenvalues of $A^{\top}A$ and $AA^{\top}$.</p>
+
+<p>$V$ is the right singular vectors of $A$, as well as the eigenvectors of $A^{\top}A$.</p>
+
+<p>$U$ is the left singular vectors of $A$, as well as the eigenvectors of $AA^{\top}$.</p>
+
+<p>Proof:</p>
+
+<p>$$
+\begin{aligned}
+A^{\top}A&amp;=V\Sigma^{\top} U^{\top} U\Sigma V^{\top}\\ <br />
+&amp;=V\Sigma^{\top} \Sigma V^{\top}\\ <br />
+&amp;=V\begin{bmatrix}\sigma_1^2 &amp; &amp; \\ &amp; \ddots &amp; \\ &amp; &amp; \sigma_r^2\end{bmatrix}V^{\top}
+\end{aligned}
+$$</p>
+
+<p>Similar for others.</p>
+
+<h3 id="linear-regression">Linear Regression:</h3>
+
+<p>Setup:</p>
+
+<ul>
+  <li>Input: $\mathbf{x}\in\mathbb{R}^D$</li>
+  <li>Output: $y\in\mathbb{R}$</li>
+  <li>Model: $f(\mathbf{x})=w_0+\mathbf{w}^{\top}\mathbf{x}=\widetilde{\mathbf{w}}^{\top}\widetilde{\mathbf{x}}$</li>
+  <li>Training data: $\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$</li>
+</ul>
+
+<p>Residual Sum of Squares (RSS):</p>
+
+<p>$$
+\text{RSS}(\mathbf{\widetilde{w}})=\sum_{n=1}^N(y_n-\mathbf{\widetilde{w}}^{\top}\mathbf{\widetilde{x}}_n)^2
+$$</p>
+
+<p>For $D=1$:</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial RSS}{\partial w_0} &amp;= -2\sum_{n=1}^N\left(y_n-(w_0+w_1x_n)\right)=0\\ <br />
+\frac{\partial RSS}{\partial w_1} &amp;= -2\sum_{n=1}^N\left(y_n-(w_0+w_1x_n)\right)x_n=0\\ <br />
+\therefore\sum y_n &amp;= N w_0 + w_1 \sum x_n,\quad\sum y_n x_n = w_0 \sum x_n + w_1 \sum x_n^2\\ <br />
+\therefore w_1^* &amp;= \frac{\sum (x_n-\bar{x})(y_n-\bar{y})}{\sum (x_n-\bar{x})^2},\quad w_0^* = \bar{y} - w_1^* \bar{x}
+\end{aligned}
+$$</p>
+
+<p>For $D&gt;1$:</p>
+
+<p>$$
+\begin{aligned}
+RSS(\widetilde{\mathbf{w}}) &amp;= \sum_{n=1}^N (y_n - \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n)^2\\ <br />
+&amp;=\sum_n(y_n-\widetilde{\mathbf{w}}^{\top}\widetilde{\mathbf{x}}_n)(y_n-\widetilde{\mathbf{x}}_n^{\top}\widetilde{\mathbf{w}})\\ <br />
+&amp;=\sum_n(- 2 y_n \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n + \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}_n \widetilde{\mathbf{x}}_n^{\top} \widetilde{\mathbf{w}}) + \text{const}\\ <br />
+&amp;=\widetilde{\mathbf{w}}^{\top} \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right) \widetilde{\mathbf{w}} - 2 \left(\widetilde{\mathbf{X}}^{\top}y\right) \widetilde{\mathbf{w}} + \text{const}\\ <br />
+\text{Set}\quad\nabla_{\widetilde{\mathbf{w}}} RSS &amp;= 2 \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right) \widetilde{\mathbf{w}} - 2 \left(\widetilde{\mathbf{X}}^{\top}y\right) = 0\\ <br />
+\text{Least Mean Squares solution}\\ \\quad\widetilde{\mathbf{w}}^{\text{LMS}} &amp;= \left(\widetilde{\mathbf{X}}^{\top}\widetilde{\mathbf{X}}\right)^{-1} \left(\widetilde{\mathbf{X}}^{\top}y\right)
+\end{aligned}
+$$</p>
+
+<h3 id="why-minimize-rss">Why minimize RSS?</h3>
+
+<p>Noisy observation model:</p>
+
+<p>$$
+Y=w_0+w_1X+\eta,\quad \eta\sim\mathcal{N}(0,\sigma^2)\quad\rightarrow\quad Y\sim\mathcal{N}(w_0+w_1x,\sigma^2)
+$$</p>
+
+<p>Conditional Likelihood:</p>
+
+<p>$$
+P(y_n|\mathbf{x}_n) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y_n - (w_0 + w_1 x_n))^2}{2\sigma^2}\right)
+$$</p>
+
+<p>Log-Likelihood of training data:</p>
+
+<p>$$
+\begin{aligned}
+\log P(\mathcal{D})&amp;=\log\prod_{n=1}^N P(y_n|\mathbf{x}_n)\\ <br />
+&amp;=\sum_{n=1}^N \log \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y_n - w_0 - w_1 x_n)^2}{2\sigma^2}\right)\\ <br />
+&amp;=-\frac{N}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{n=1}^N (y_n - w_0 - w_1 x_n)^2\\ <br />
+\end{aligned}
+$$</p>
+
+<p>Maximize over $w_0$ and $w_1$: $\max \log P(\mathcal{D})\leftrightarrow \min \text{RSS}$</p>
+
+<ul>
+  <li>This gives a solid footing to our intuition: minimizing $RSS(\widetilde{\mathbf{w}})$ is a sensible thing based on reasonable modeling assumptions.</li>
+</ul>
+
+<p>Maximize over $\sigma^2$:</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial \log P(\mathcal{D})}{\partial \sigma^2} &amp;= -\frac{N}{2\sigma^2} + \frac{1}{2\sigma^4} \sum_{n=1}^N (y_n - w_0 - w_1 x_n)^2\\ <br />
+&amp;= -\frac{N}{2\sigma^2} + \frac{1}{2\sigma^4} \text{RSS}(\widetilde{\mathbf{w}})\\ <br />
+\therefore \sigma^{2*} &amp;= \frac{1}{N} \text{RSS}(\widetilde{\mathbf{w}})
+\end{aligned}
+$$</p>
+
+<ul>
+  <li>Estimating $\sigma^{2*}$ tells us how much noise there is in our predictions. For example, it allows us to place confidence intervals around our predictions.</li>
+</ul>
+
+<h3 id="gradient-descent-method">Gradient Descent Method:</h3>
+
+<p>pending…</p>
+
+<h2 id="lecture-5-overfitting">Lecture 5: Overfitting</h2>
+
+<p>Pending…</p>
+
+<h2 id="lecture-6-naive-bayes">Lecture 6: Naive Bayes</h2>
+
+<p>Naive Bayes:</p>
+
+<p>$$
+P(y|\mathbf{x}) = \frac{P(\mathbf{x}|y)P(y)}{P(\mathbf{x})}
+$$</p>
+
+<p>Spam example:</p>
+
+<p>$$
+\begin{aligned}
+P(\mathbf{X}=\mathbf{x}, Y=c)&amp;=P(Y=c)P(X=x|Y=c) \\ <br />
+&amp;=P(Y=c)\prod_{k=1}^K P(\text{word}_k|Y=c)^{x_k} \\ <br />
+&amp;=\pi_c\prod_{k=1}^K \theta_{c,k}^{x_k},
+\end{aligned}
+$$</p>
+
+<p>where $\pi_c = P(Y = c)$ is the prior probability of class $c$, $x_k$ is the number of occurrences of the $k$th word, and $ \theta _{c,k} = P(\text{word }_k|Y = c) $ is the weight of the $k$th word for the $c$th class.</p>
+
+<p>Training Data:</p>
+
+<p>$$
+\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N=\{(\{x_{n,k}\}_{k=1}^K,y_n)\}_{n=1}^N
+$$</p>
+
+<p>Goal:</p>
+
+<p>Learn $\pi_c$ and $\theta_{c,k}$ from the training data $\mathcal{D}$.</p>
+
+<p>Log-Likelihood:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L}(\pi, \theta) &amp;= \sum_{n=1}^N \log P(\mathbf{x}_n, y_n)\\ <br />
+&amp;= \sum_{n=1}^N \log \left(\pi_{y_n} \prod_{k=1}^K \theta_{y_n,k}^{x_{n,k}}\right)\\ <br />
+&amp;= \sum_{n=1}^N \log \pi_{y_n} + \sum_{n=1}^N \sum_{k=1}^K x_{n,k} \log \theta_{y_n,k}
+\end{aligned}
+$$</p>
+
+<p>Optimization:</p>
+
+<p>Note that $\pi_c$ and $\theta_{c,k}$ can be optimized separately.</p>
+
+<p>$$
+\begin{aligned}
+\pi_c^* &amp;= \frac{N_c}{N}\quad\rightarrow\text{see Lecture 2}\\ <br />
+\theta_{c,k}^* &amp;= \frac{\sum_{n=1}^N x_{n,k} \mathbb{I}(y_n = c)}{\sum_{n=1}^N \sum_{k=1}^K x_{n,k} \mathbb{I}(y_n = c)}\\ <br />
+&amp;=\frac{\text{# word k shows up in data for class c}}{\text{# words shows up in data for class c}}\quad\rightarrow\text{see Lecture 2}
+\end{aligned}
+$$</p>
+
+<p>Classification:</p>
+
+<p>$$
+\begin{aligned}
+y^* &amp;= \arg\max_c P(y=c|\mathbf{x})\\ <br />
+&amp;= \arg\max_c P(\mathbf{x}|y=c)P(y=c)\\ <br />
+&amp;= \arg\max_c \pi_c \prod_{k=1}^K \theta_{c,k}^{x_k}\\ <br />
+&amp;= \arg\max_c \log \pi_c + \sum_{k=1}^K x_k \log \theta_{c,k}
+\end{aligned}
+$$</p>
+
+<p>Problem: if $\theta_{c,k}^* = 0$ for some $c$ and $k$, then any test document containing the $k$th word will be classified as not belonging to class $c$.</p>
+
+<p>Solution: Laplace Smoothing</p>
+
+<p>$$
+\theta_{c,k}^* = \frac{\sum_{n=1}^N x_{n,k} \mathbb{I}(y_n = c) + \alpha}{\sum_{n=1}^N \sum_{k=1}^K x_{n,k} \mathbb{I}(y_n = c) + K\alpha}
+$$</p>
+
+<h2 id="lecture-7-logistic-regression">Lecture 7: Logistic Regression</h2>
+
+<p>Recall for Naive Bayes:</p>
+
+<p>$$
+y^* = \arg\max_c \log \pi_c + \sum_{k=1}^K x_k \log \theta_{c,k}
+$$</p>
+
+<p>For binary classification, the label is based on the sign of</p>
+
+<p>$$
+\log\pi_1+\sum_{k=1}^K x_k \log \theta_{1,k} - \log\pi_2 - \sum_{k=1}^K x_k \log \theta_{2,k},
+$$</p>
+
+<p>which is a linear function of the input features $\mathbf{x}$.</p>
+
+<h3 id="logistic-regression">Logistic Regression:</h3>
+
+<p>Setup:</p>
+
+<ul>
+  <li>Input: $\mathbf{x}\in\mathbb{R}^D$</li>
+  <li>Output: $y\in\{0,1\}$</li>
+  <li>Training data: $\mathcal{D}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$</li>
+  <li>Model: $P(y=1|\mathbf{x})=\sigma(\mathbf{w}^{\top}\mathbf{x})=g(\mathbf{x})$, where $\sigma(z)=\frac{1}{1+e^{-z}}$ is the sigmoid function</li>
+</ul>
+
+<p>Likelihood:</p>
+
+<p>$$
+\begin{aligned}
+p(y_n|\mathbf{x}_n;\mathbf{w})&amp;=g(\mathbf{x}_n)^{y_n}(1-g(\mathbf{x}_n))^{1-y_n}\\ <br />
+\mathcal{L}(\mathbf{w})&amp;=\prod_{n=1}^N p(y_n|\mathbf{x}_n;\mathbf{w})\\ <br />
+\log \mathcal{L}(\mathbf{w})&amp;=\sum_{n=1}^N \left(y_n \log g(\mathbf{x}_n) + (1-y_n) \log (1-g(\mathbf{x}_n))\right)
+\end{aligned}
+$$</p>
+
+<p>We use the negative log-likelihood, which is also called the <strong>cross-entropy loss</strong>:</p>
+
+<p>$$
+\varepsilon(\mathbf{w}) = -\log \mathcal{L}(\mathbf{w}) = -\sum_{n=1}^N \left(y_n \log g(\mathbf{x}_n) + (1-y_n) \log (1-g(\mathbf{x}_n))\right)
+$$</p>
+
+<p>Gradient:</p>
+
+<p>$$
+\begin{aligned}
+\frac{d\sigma(z)}{dz} &amp;= \sigma(z)(1-\sigma(z))\\ <br />
+\therefore \nabla_{\mathbf{w}} \varepsilon(\mathbf{w}) &amp;= -\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} \nabla_{\mathbf{w}} g(\mathbf{x}_n) + (1-y_n) \frac{-1}{1-g(\mathbf{x}_n)} \nabla_{\mathbf{w}} g(\mathbf{x}_n)\right)\\ <br />
+&amp;=-\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} - (1-y_n) \frac{1}{1-g(\mathbf{x}_n)}\right) \nabla_{\mathbf{w}} g(\mathbf{x}_n)\\ <br />
+&amp;=-\sum_{n=1}^N \left(y_n \frac{1}{g(\mathbf{x}_n)} - (1-y_n) \frac{1}{1-g(\mathbf{x}_n)}\right) g(\mathbf{x}_n)(1-g(\mathbf{x}_n)) \mathbf{x}_n\\ <br />
+&amp;=-\sum_{n=1}^N \left(y_n - g(\mathbf{x}_n)\right) \mathbf{x}_n\\ <br />
+&amp;=\sum_{n=1}^N \left(g(\mathbf{x}_n) - y_n\right) \mathbf{x}_n,
+\end{aligned}
+$$</p>
+
+<p>where $\left(g(\mathbf{x}_n) - y_n\right)$ is the training error for the $n$th training example.</p>
+
+<p>Training:</p>
+
+<p>pending… (page 31)</p>
+
+<h3 id="non-linear-decision-boundary">Non-linear Decision Boundary:</h3>
+
+<p>Solution: High-dimensional feature space (which increases the risk of overfitting, so we need to) add regularization.</p>
+
+<h3 id="classification-metric">Classification Metric:</h3>
+
+<ul>
+  <li>True Positive (TP): number of positive examples correctly classified as positive</li>
+  <li>False Positive (FP): number of negative examples incorrectly classified as positive</li>
+  <li>True Negative (TN): number of negative examples correctly classified as negative</li>
+  <li>False Negative (FN): number of positive examples incorrectly classified as negative</li>
+  <li>Sensitivity (Recall): $\frac{TP}{TP + FN}$, the proportion of positive examples that are correctly classified as positive</li>
+  <li>Specificity: $\frac{TN}{TN + FP}$, the proportion of negative examples that are correctly classified as negative</li>
+  <li>Precision: $\frac{TP}{TP + FP}$, the proportion of positive predictions that are correct</li>
+</ul>
+
+<p><strong>Receiver Operating Characteristic (ROC) Curve:</strong> plots the true positive rate (sensitivity) against the false positive rate (1-specificity) at various threshold settings.</p>
+
+<p><strong>AUROC:</strong> the area under the ROC curve, which measures the overall performance of a binary classifier. A higher AUROC indicates better performance, with a value of $1$ representing a perfect classifier and a value of $0.5$ representing a random classifier.</p>
+
+<h2 id="lecture-8-multiclass-logistic-regression">Lecture 8: Multiclass Logistic Regression</h2>
+
+<p>Solution: Softmax of Sigmoid</p>
+
+<h2 id="lecture-9-10-support-vector-machines-svm">Lecture 9-10: Support Vector Machines (SVM)</h2>
+
+<p>Advantages of SVM</p>
+
+<ol>
+  <li>Maximizes distance of training points from the boundary.</li>
+  <li>Only requires a subset of the training points.</li>
+  <li>Is less sensitive to outliers.</li>
+  <li>Scales better with high-dimensional data.</li>
+  <li>Generalizes well to many nonlinear models.</li>
+</ol>
+
+<p>Idea: Maximize the margin between the decision boundary and the training points.</p>
+
+<p>Distance from a point $\mathbf{x}$ to the decision boundary $\mathbf{w}^{\top}\mathbf{x} + w_0 = 0$:</p>
+
+<p>$$
+d_{\mathcal{H}}(\mathbf{x}) = \frac{|\mathbf{w}^{\top}\mathbf{x} + w_0|}{\|\mathbf{w}\|_2}
+$$</p>
+
+<p>To remove the absolute value, we use $y = +1$ to represent positive label and $y = -1$ for negative label, then we have $(\mathbf{w}^{\top}\mathbf{x} + w_0)$ and the label $y$ must have the same sign. So we get</p>
+
+<p>$$
+d_{\mathcal{H}}(\mathbf{x}) = \frac{y(\mathbf{w}^{\top}\mathbf{x} + w_0)}{\|\mathbf{w}\|_2}\\ <br />
+\text{MARGIN}(\mathbf{w}, w_0) = \min_{n} d_{\mathcal{H}}(\mathbf{x}_n)
+$$</p>
+
+<p>To solve the SVM, we want to <strong>maximize</strong> the margin.</p>
+
+<p>We can <strong>scale</strong> $\mathbf{w}$ and $w_0$ by any positive constant without changing the decision boundary, so we can set $\text{MARGIN}(\mathbf{w}, w_0) = 1$, which gives us the following optimization problem:</p>
+
+<p>$$
+\max_{\mathbf{w}, w_0} \text{MARGIN}(\mathbf{w}, w_0) = \max_{\mathbf{w}, w_0} \frac{1}{\|\mathbf{w}\|_2} \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1, \forall n
+$$</p>
+
+<p>Which is further equivalent to:</p>
+
+<p>$$
+\min_{\mathbf{w}, w_0} \frac{1}{2}\|\mathbf{w}\|_2^2 \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1, \forall n
+$$</p>
+
+<p>SVM is called a max margin (or large margin) classifier. The constraints are called large margin constraints.</p>
+
+<h3 id="soft-margin-svm">Soft Margin SVM:</h3>
+
+<p>Problem: Not fully linear separable data?</p>
+
+<p>Solution: Slack variable</p>
+
+<p>$$
+\xi_n \geq 0 \quad\text{s.t.}\quad y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n, \forall n
+$$</p>
+
+<p>Which gives us the following optimization problem:</p>
+
+<p>$$
+\begin{aligned}
+\min_{\mathbf{w}, w_0, \xi} \frac{1}{2}\|\mathbf{w}\|_2^2 + C \sum_{n=1}^N \xi_n \quad\text{s.t.}\quad &amp;y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n, \forall n\\ <br />
+&amp;\xi_n \geq 0, \forall n
+\end{aligned}
+$$</p>
+
+<p>Where $C$ is a hyperparameter that controls the trade-off between maximizing the margin and minimizing the classification error (same idea as the regularization parameter in logistic regression).</p>
+
+<p>Hinge Loss Form:</p>
+
+<p>We want to extract the slack variable $\xi_n$ from the constraints, which gives us:</p>
+
+<p>$$
+y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) \geq 1 - \xi_n \leftrightarrow \xi_n \geq \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0))
+$$</p>
+
+<p>By setting $\lambda = \frac{1}{C}$, we can rewrite the optimization problem as:</p>
+
+<p>$$
+\min_{\mathbf{w}, w_0} \sum_{n=1}^N \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0)) + \frac{\lambda}{2}\|\mathbf{w}\|_2^2
+$$</p>
+
+<p>The first term is called the <strong>hinge loss</strong>. This can be optimized using gradient descent. There is no penalty for points that are correctly classified and outside the margin, a linear penalty for points that are correctly classified but inside the margin, and a linear penalty for points that are misclassified.</p>
+
+<h3 id="dual-form">Dual Form:</h3>
+
+<p>Optimization problem:</p>
+
+<p>$$
+\begin{aligned}
+\min_{\mathbf{w}, w_0} \sum_{n=1}^N \max(0, 1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0)) + \frac{\lambda}{2}\|\mathbf{w}\|_2^2
+\end{aligned}
+$$</p>
+
+<p>Restrictions (canonical form):</p>
+
+<p>$$
+\begin{aligned}
+-\xi_n &amp;\leq 0, \forall n\\ <br />
+1-y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) - \xi_n &amp;\leq 0, \forall n
+\end{aligned}
+$$</p>
+
+<p>Lagrangian:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L}(\mathbf{w}, w_0, {\xi_n}, {\alpha_n}, {\lambda_n}) &amp;= C\sum_{n=1}^N \xi_n + \frac{1}{2}\|\mathbf{w}\|_2^2 + \sum_{n=1}^N \lambda_n (-\xi_n) + \sum_{n=1}^N \alpha_n (1 - y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) - \xi_n)\\ <br />
+\end{aligned}
+$$</p>
+
+<p>under the constraints $\alpha_n \geq 0$ and $\lambda_n \geq 0$ for all $n$.</p>
+
+<p>Goal: $\min_{\mathbf{w}, w_0, \xi_n} \max_{\alpha_n \geq 0, \lambda_n \geq 0}\mathcal{L}(\mathbf{w}, w_0, {\xi_n}, {\alpha_n}, {\lambda_n})$</p>
+
+<p>Idea: If we break the constraints, then the unlimited $\alpha_n$ and $\lambda_n$ will make the Lagrangian go to infinity.</p>
+
+<p>$$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial \mathbf{w}} &amp;= \mathbf{w} - \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n = 0 &amp;\rightarrow \mathbf{w} = \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n\\ <br />
+\frac{\partial \mathcal{L}}{\partial w_0} &amp;= -\sum_{n=1}^N \alpha_n y_n = 0 &amp;\rightarrow \sum_{n=1}^N \alpha_n y_n = 0\\ <br />
+\frac{\partial \mathcal{L}}{\partial \xi_n} &amp;= C - \lambda_n - \alpha_n = 0 &amp;\rightarrow \lambda_n = C - \alpha_n\rightarrow \alpha_n \leq C
+\end{aligned}
+$$</p>
+
+<p>Features:</p>
+
+<ul>
+  <li>Independent of the size d of x: <strong>SVM scales better for high-dimensional features.</strong></li>
+  <li>May seem like a lot of optimization variables when N is large, but many of the $\alpha_n$ become zero. $\alpha_n$ is non-zero only if the nth point is a support vector. <strong>SVM only depends on a subset of the training points (support vectors).</strong></li>
+</ul>
+
+<p>$\alpha_n&lt;C$ only when $\xi_n=0$, pending… (page 62)</p>
+
+<p>Learning:</p>
+
+<p>$$
+\mathbf{w} = \sum_{n=1}^N \alpha_n y_n \mathbf{x}_n
+$$</p>
+
+<p>For $(\mathcal{x}_n,y_n)$ such that $0&lt;\alpha_n&lt;C$, we have</p>
+
+<p>$$
+\begin{aligned}
+y_n(\mathbf{w}^{\top}\mathbf{x}_n + w_0) &amp;= 1\\ <br />
+w_0 &amp;= y_n - \mathbf{w}^{\top}\mathbf{x}_n\\ <br />
+&amp;= y_n - \sum_{m=1}^N \alpha_m y_m \mathbf{x}_m^{\top} \mathbf{x}_n
+\end{aligned}
+$$</p>
+
+<h3 id="kernel-svm">Kernel SVM:</h3>
+
+<p>Similar to the linear regression case, we can use a non-linear basis function $\phi(\mathbf{x})$ to map the input features into a higher-dimensional space. The optimization problem becomes:</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L} &amp;= C\sum_{n=1}^N \xi_n + \frac{1}{2}\|\mathbf{w}\|_2^2 + \sum_{n=1}^N \lambda_n (-\phi(\xi_n)) + \sum_{n=1}^N \alpha_n (1 - y_n(\mathbf{w}^{\top}\phi(\mathbf{x}_n) + w_0) - \xi_n)\\ <br />
+&amp;=\frac{1}{2}||\mathbf{w}||_2^2 - \sum \alpha_n y_n \mathbf{w}^{\top} \phi(\mathbf{x}_n) + \sum \alpha_n\quad\text{(Other terms sum up to zero)}\\ <br />
+&amp;=\sum \alpha_n -\frac12 \sum_{i,j} \alpha_i \alpha_j y_i y_j \phi(\mathbf{x}_i)^{\top} \phi(\mathbf{x}_j)\quad\text{(Substitute $\mathbf{w}=\sum \alpha_n y_n \phi(\mathbf{x}_n)$)}\\ <br />
+&amp;=\sum \alpha_n -\frac12 \sum_{i,j} \alpha_i \alpha_j y_i y_j k(\mathbf{x}_i, \mathbf{x}_j)\quad\text{(Define $k(\mathbf{x}_i, \mathbf{x}_j) = \phi(\mathbf{x}_i)^{\top} \phi(\mathbf{x}_j)$)}
+\end{aligned}
+$$</p>
+
+<p>where $k(\mathbf{x}_i, \mathbf{x}_j)$ is called the <strong>kernel function</strong>.</p>
+
+<p>$k$ is a valid kernel function if it is symmetric and positive semi-definite. Some popular examples:</p>
+
+<ul>
+  <li>Dot product kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top} \mathbf{x}_j$</li>
+  <li>Dot product with positive-definite matrix: $k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top} A \mathbf{x}_j$</li>
+  <li>Polynomial kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = (\mathbf{x}_i^{\top} \mathbf{x}_j + 1)^d,d\in\mathbb{Z}^+$</li>
+  <li>Radial basis function (RBF) kernel: $k(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \|\mathbf{x}_i - \mathbf{x}_j\|^2),\gamma&gt;0$</li>
+</ul>
+
+<p>Note that we do not need to know the explicit form of $\phi(\mathbf{x})$ to compute $k(\mathbf{x}_i, \mathbf{x}_j)$, which allows us to work with very high-dimensional feature spaces without incurring a large computational cost. This is called the <strong>kernel trick</strong>.</p>
+
+<p>But how do we predict?</p>
+
+<p>$$
+\begin{aligned}
+y &amp;= \text{sign}(\mathbf{w}^{\top}\phi(\mathbf{x}) + w_0)\\ <br />
+&amp;=\text{sign}\left(\sum_{n=1}^N \alpha_n y_n
+\phi(\mathbf{x}_n)^{\top} \phi(\mathbf{x}) + w_0\right)\\ <br />
+&amp;=\text{sign}\left(\sum_{n=1}^N \alpha_n y_n k(\mathbf{x}_n, \mathbf{x}) + w_0\right)
+\end{aligned}
+$$</p>
+
+<p>pending…</p>]]></content><author><name>DeerInForestovo</name></author><category term="notes" /><summary type="html"><![CDATA[Notes for CMU-18661 Introduction to Machine Learning for Engineers.]]></summary></entry><entry><title type="html">My Course Notes in CMU (2025 Fall)</title><link href="/jekyll-theme-yat/notes/2025/09/26/cmu-notes.html" rel="alternate" type="text/html" title="My Course Notes in CMU (2025 Fall)" /><published>2025-09-26T00:00:00+00:00</published><updated>2025-09-26T00:00:00+00:00</updated><id>/jekyll-theme-yat/notes/2025/09/26/cmu-notes</id><content type="html" xml:base="/jekyll-theme-yat/notes/2025/09/26/cmu-notes.html"><![CDATA[<p>Hi, everyone! I am currently learning in Carnegie Mellon University M.S.ECE program. I would like to share my notes on all the courses I have taken, and hope that they are also helpful for you.</p>
+
+<p>Due to <a href="https://www.cmu.edu/policies/student-and-student-life/academic-integrity.html">CMU AIV policy</a>, I will ONLY share my notes to the courses here, and NOT sharing my homework answers and/or lab/project repositories.</p>
+
+<p>Most of the notes will be published as public <a href="https://www.notion.com/">Notion</a> pages.</p>
+
+<hr />
+
+<h1 id="2025-fall">2025 Fall</h1>
+
+<p>18-613 <em>Computer System</em>: No notes now</p>
+
+<p>18-755 <em>Networks in the Real World</em>: <a href="https://spice-donkey-48b.notion.site/Networks-in-the-Real-World-25a2ab68ff7e804baabcec9bd6b04796?source=copy_link">link to published Notion page</a></p>
+
+<p>15-650 <em>Algorithm and Advanced Data Structure</em>: <a href="https://spice-donkey-48b.notion.site/Algorithm-and-Advanced-Data-Structure-25a2ab68ff7e802e801ddf15427c2a7e?source=copy_link">link to published Notion page</a></p>]]></content><author><name>DeerInForestovo</name></author><category term="notes" /><summary type="html"><![CDATA[Here are my notes during learning in Carnegie Mellon University M.S.ECE program.]]></summary></entry><entry><title type="html">Who am I?</title><link href="/jekyll-theme-yat/article/2025/08/27/who-am-i.html" rel="alternate" type="text/html" title="Who am I?" /><published>2025-08-27T00:00:00+00:00</published><updated>2025-08-27T00:00:00+00:00</updated><id>/jekyll-theme-yat/article/2025/08/27/who-am-i</id><content type="html" xml:base="/jekyll-theme-yat/article/2025/08/27/who-am-i.html"><![CDATA[<p><em>02/16/2026 Updated</em></p>
+
+<p><a href="/jekyll-theme-yat/assets/pdf/CV_English_grad_12.pdf">PDF-Resume</a></p>
+
+<p><em>08/27/2025 Updated</em></p>
+
+<p>I’m Liang Kuang, also known as DeerInForest/林空鹿饮溪 on some social platforms.</p>
+
+<p>I earned my bachelor’s degree in Computer Science from the Southern University of Science and Technology (SUSTech), graduating with honors from the 2021 Turing Class. I’m now pursuing a master’s degree in Electrical and Computer Engineering at Carnegie Mellon University.</p>
+
+<p>I’m actively looking for <strong>SDE internships for summer 2026</strong> and <strong>full-time opportunities starting in 2027</strong>.</p>
+
+<p>Outside of academics, I enjoy connecting with people from around the world and making new friends!</p>
+
+<hr />
+
+<h3 id="oiicpc-awards">OI/ICPC Awards</h3>
+
+<ul>
+  <li><span class="silver">Silver Medal</span> @ 46th ICPC East-Asian Continental Final (EC-Final)</li>
+  <li><span class="gold">Gold Medal</span> @ 46th ICPC Asian Regional Contest (Shanghai)</li>
+  <li><span class="silver">Silver Medal</span> @ 46th ICPC Asian Regional Contest (Shandong)</li>
+  <li><span class="gold">First Prize</span> @ NOIp Junior Group 2015, 2016, 2017, and Senior Group 2017, 2018, 2019 (CSP-S), 2020</li>
+  <li><span class="bronze">Third Prize</span> @ CTSC (CTS) 2019</li>
+</ul>
+
+<h3 id="publication">Publication</h3>
+
+<p><strong>PRCV 2025:</strong> <a href="https://arxiv.org/abs/2409.18578">An Enhanced Federated Prototype Learning Method under Domain Shift</a></p>
+
+<h3 id="contctfollow-me-at">Contct/Follow me at:</h3>
+
+<ul>
+  <li>Email: liangk@andrew.cmu.edu</li>
+  <li>LinkedIn: <a href="https://www.linkedin.com/in/liangkuang-cmuece">LiangKuang</a></li>
+  <li>Handshake: <a href="https://cmu.joinhandshake.com/profiles/kuangliang-cmuece">LiangKuang</a></li>
+  <li>GitHub: <a href="https://github.com/DeerInForestovo">DeerInForestovo</a></li>
+  <li>RedNote: <a href="https://www.xiaohongshu.com/user/profile/62d8f311000000001b000b1a">林空鹿饮溪ovo</a></li>
+  <li>Bilibili: <a href="https://space.bilibili.com/263186314">林空鹿饮溪ovo</a></li>
+</ul>
+
+<hr />
+
+<p>I will keep my CV up to date on this page and post little updates about my work and studies. Don’t forget to bookmark the link!</p>]]></content><author><name>DeerInForestovo</name></author><category term="article" /><summary type="html"><![CDATA[这里是我的自我介绍。Find my self introduction here.]]></summary></entry><entry><title type="html">My application experience</title><link href="/jekyll-theme-yat/article/2025/02/28/fei-yue.html" rel="alternate" type="text/html" title="My application experience" /><published>2025-02-28T00:00:00+00:00</published><updated>2025-02-28T00:00:00+00:00</updated><id>/jekyll-theme-yat/article/2025/02/28/fei-yue</id><content type="html" xml:base="/jekyll-theme-yat/article/2025/02/28/fei-yue.html"><![CDATA[<p>This article is particularly for Chinese students, so I will not provide English translation.</p>
+
+<h1 id="前言">前言</h1>
+
+<p>本文允许任何形式的转载，只需标明出处（保留本段即可）。如果你在其他地方看到这篇博文，也欢迎访问我的博客查看<a href="https://deerinforestovo.github.io/article/2025/02/28/fei-yue.html">原文</a>。</p>
+
+<p>经过一整个寒假的焦急等待，包括但不限于每天刷新邮箱、时不时查看 application portal 、高强度逛 reddit 和小红书等，我终于在开学后第二周收获了第一份 offer 。至此，某种程度上来说我在寒假后期找的种种留学失败的替代方案大概率都成了白费力气，事实证明急也没用，寒假还是得好好过年。也是自此，我正式把写一份飞跃手册提上日程。</p>
+
+<p>本博客主要按时间轴复盘了我的整个申请流程，分享一些我使用过的工具，以及一些我踩过的坑。</p>
+
+<p><strong>4.23 更新：</strong> 大部分项目结果已定，最后决定去 ECE@CMU ，修改了一些文中的细节再次发布，同时已投稿至我们学校的<a href="https://sustech-application.com/post/kuangl21">飞跃手册</a>。</p>
+
+<p><strong>7.23 更新：</strong> 今天有学弟私戳我说博客挂了，研究了一下为什么，顺便更新了一下表格里的最终结果。除了CMU和莱斯（和补申的港中深），其他果然全挂了。所以也是再次提醒大家，多申多申多申。</p>
+
+<h1 id="三维">三维</h1>
+
+<p><a href="/jekyll-theme-yat/assets/pdf/CV_master_application.pdf">简历</a></p>
+
+<ul>
+  <li>专业：计算机科学与技术，图灵班</li>
+  <li>GPA(大三)：3.86/4，rank 15/195</li>
+  <li>托福：103=29+28+20+26</li>
+  <li>GRE：318=148+170(+3.5)</li>
+</ul>
+
+<h1 id="时间轴">时间轴</h1>
+
+<p>请注意，这是我个人的时间轴，是已经发生过的、无法更改的事情，并不代表我推荐它。事实上，它有很多值得改进的地方，需要大家阅读后续的文字内容。</p>
+
+<div class="timeline">
+  <div class="event" data-aos="fade-up">
+    <strong>大一上下、大二上下</strong>
+    <p>
+        因为彼时还没有很强烈的留学想法，所以主要以学好课内、打好比赛为主。具体而言：
+    </p>
+    <ul>
+        <li><b>卷绩点：</b>建议大家尽早确定自己要进的专业（最好是入学前/选课前就确定），或者至少让自己摇摆的选项尽可能先修课重合，最好在大二开始前满足进专业的先修课要求（虽然部分专业可能不能满足所有大一同学都能进专业，但是那个影响其实不太大，自己的先修课是否完全满足才是最重要的）。</li>
+        <li><b>打比赛（ACM-ICPC）：</b>诚恳地讲，不是 OIer 出身的同学想在 ACM 打出很好的成绩是非常凤毛麟角的，但是各个专业都有好多个赛道的比赛，具体可以联系自己专业的学长学姐了解。如果你有基础，希望加入 ACM 队，可以在确定录取后邮件联系唐博老师。</li>
+        <li><b>四六级：</b>如果确定出国，四六级成绩不需要卷，裸考即可。主要是记得报名、记得去。出国/保研摇摆的话，建议四级裸考、六级卷到 560 左右（好像是清北营要求的分？具体数字我不是特别懂，详询保研选手）。</li>
+    </ul>
+  </div>
+  <div class="event" data-aos="fade-up">
+    <strong>大三上</strong>
+    <p>
+        因为大二暑假和家人讨论出路后，萌生了出国留学的念头，因此大三上过得相对来说比较辛苦。
+    </p>
+    <ul>
+        <li><b>卷绩点：</b>毕竟是大学生活的主旋律。</li>
+        <li><b>考了第一次托福：</b>2023年10月，94分。</li>
+        <li><b>准备下学期学术交流的材料：</b>因为是图灵班集体项目所以经验参考价值不大，如果你对外出交流感兴趣，请留意国合部邮件以及联系有经验的学长学姐。</li>
+    </ul>
+  </div>
+  <div class="event" data-aos="fade-up">
+    <strong>大三下</strong>
+    <ul>
+        <li>大三下我在北京做科研，系里是认它可以认证工业实习学分的，因此我没有其他实习。</li>
+        <li>同时，我在时间相对充裕的时候考了第二次托福：2024年4月，103分。</li>
+    </ul>
+  </div>
+  <div class="event" data-aos="fade-up">
+    <strong>大三暑假</strong>
+    <ul>
+        <li>暑假我还花了不少时间在上学期的科研上，另外就是考了 GRE （2024年8月，148+170+3.5），感觉不是很理想但是摆了。</li>
+        <li>同时，我开始正式整理自己的软背景，写简历，同时考虑申请的方向以及具体的学校项目。</li>
+    </ul>
+  </div>
+  <div class="event" data-aos="fade-up">
+    <strong>大四上下</strong>
+    <p>
+        写文书，申请；等offer，做毕设，准备出国。
+    </p>
+  </div>
+</div>
+
+<h1 id="如果时间能倒流">如果时间能倒流</h1>
+
+<p>总体来说，我对自己的规划与执行还是满意的。如果说有什么不够满足的，可能主要有以下三点吧。</p>
+
+<ul>
+  <li>
+    <p>大一结束时，我们队拿到了 ICPC 区域赛上海站的金牌和 ICPC EC-final （因为疫情推迟了）的银牌。当时我们三人一致认为，作为一个草根队（没人高中进过省队）来说已经知足了，取得 EC 金甚至出线 wf 可能不太现实，于是向唐博老师提出离开竞赛队。但我大二相对来说比较摆，没有把不再参加竞赛的时间投入其他事情（例如科研）。</p>
+  </li>
+  <li>
+    <p>我很感谢导师提供的学术交流机会，对方机构也给我提供了很大的支持，且后续为我提供了一封推荐信。但事实上，国内学术交流更适合之后希望保研至交流的机构的同学。如果是以出国为目标，最好还是选择出国交流。</p>
+  </li>
+  <li>
+    <p>大三暑假花了好多时间准备 GRE ，最后既没考好也没用上，如果能刷一段实习，我的简历就更充实了。</p>
+  </li>
+</ul>
+
+<h1 id="工具资源集">工具/资源集</h1>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/NYH-Dolphin/SUSTech-Course-Info">NYH的笔记</a>：来自计系的校十佳毕业生公开的课程资料。</p>
+  </li>
+  <li>
+    <p><a href="https://opencs.app/">OpenCS</a>：<strong>特别推荐！</strong>这是一个选校梯度参考网站，是国内的同学制作开源的，主要是美国高校<strong>计算机</strong>硕士项目的一些评价和经验等等。</p>
+  </li>
+  <li>
+    <p><a href="https://www.notion.com/">Notion</a>：一个免费的做笔记工具，我用它记录院校的信息等等，你也可以用自己喜欢的笔记软件。</p>
+  </li>
+  <li>
+    <p>Deepseek/ChatGPT：免费的模型足以担任润色文书的工具。</p>
+  </li>
+  <li>
+    <p>可以从 b站/小红书/reddit 等社交平台上获取一定的信息，但是在我的申请过程中帮助不大。</p>
+  </li>
+</ul>
+
+<h1 id="申请的院校">申请的院校</h1>
+
+<table>
+  <tr>
+    <td>地区</td>
+    <td>项目</td>
+    <td>结果</td>
+  </tr>
+  <tr>
+    <td rowspan="6">美</td>
+    <td>CMU MSIN</td>
+    <td>拒信（3.13）</td>
+  </tr>
+  <tr>
+    <td>CMU ECE</td>
+    <td>录取（3.15）</td>
+  </tr>
+  <tr>
+    <td>UCSD MSCS(CS75)</td>
+    <td>拒信（4.17）</td>
+  </tr>
+  <tr>
+    <td>Columbia University MSCS</td>
+    <td>拒信（5.9）</td>
+  </tr>
+  <tr>
+    <td>Rice University MCS</td>
+    <td>录取（2.26）</td>
+  </tr>
+  <tr>
+    <td>Notre Dame CS-PhD</td>
+    <td>拒信（4.18，其实面试就拒了）</td>
+  </tr>
+  <tr>
+    <td rowspan="3">港新</td>
+    <td>NUS MsC AI-track</td>
+    <td>拒信（6.4）</td>
+  </tr>
+  <tr>
+    <td>港中深 计算机与信息工程 理学硕士</td>
+    <td>录取（2.25-4.23，第三批，无奖）</td>
+  </tr>
+  <tr>
+    <td>港中深 数据科学 理学硕士</td>
+    <td>未知（默拒，因为是补申的，搞不好申的时候已经满了）</td>
+  </tr>
+</table>
+
+<p>我申请的项目数量偏少（严重偏少！），而且我也几乎没申bar低的项目托底（按opencs的评分，托底是莱斯），要不是运气好被CMU和莱斯捞了一手就要gap去了，因此建议同学们还是稍微多申请一点。至于我为什么申请的这么少……请从文中细节得知。</p>
+
+<h1 id="语言成绩">语言成绩</h1>
+
+<p>我的第一次托福是27+22+19+26，第二次29+28+20+26，虽然总分提高了不少，但是我真正花时间准备的后两科一共提高了一分……简单分享一下我自己的感受吧，大家见仁见智。</p>
+
+<ul>
+  <li>阅读：
+    <ul>
+      <li>细节题：绝大多数情况下，细节题的答案都是原文某个句子的同义转述。极少数的情况下，使用到了多个句子的信息。因此，只要耐心阅读，词汇量基本达标的情况下，找到藏有答案的那个句子即可。</li>
+      <li>词义题：做对当且仅当你背过题干的单词和选项的单词，只有提高词汇量才能稳吃。</li>
+      <li>填句题：大多数情况下是看代词，不然就是存在逻辑线。</li>
+      <li>六选三：阅读的时候我不会做笔记，但会大概想一下：我会如何写一句话概括这一段。这样在最后六选三的时候，就相对比较有把握找到是骨干的三句。另外选出三句以后，回看一下这四句话（包括题干提供的一句）组成的段落能不能让一个没看过这篇文章的人知道这篇文章在讲什么。</li>
+    </ul>
+  </li>
+  <li>听力：
+    <ul>
+      <li>对话的核心是：这个同学遇到了什么问题，相关工作人员提出了哪些措施帮他解决这些问题。</li>
+      <li>讲座的话，第一段会说这个讲座的主题是什么，此后每段会讲一个方面/一个种类/一个例子/一个xx，总之就是基本上是总分结构；或者也可能是时间顺序结构，不过也可以看成一种按时间分隔的总分嘛。</li>
+      <li>我做听力的理念是听懂尽可能多，记下最重要的。我会把主要的精力放在听录音上，只在必要的时候动笔记下一些框架的逻辑脉络和重点细节的关键词。我的经验是，如果听懂的比例足够多，其实在答题的过程中很多时候不看笔记都能想起答案。不过这是一个个人习惯。“如何记笔记”是一个经久不衰的议题，大家以自己练习的感受为准即可。</li>
+    </ul>
+  </li>
+  <li>
+    <p>口语：
+  这个就不做经验分享了哈哈。不过我可以推荐两个 up 主，个人觉得还不错，不过没有试过他们的付费服务，只看过视频：<a href="https://space.bilibili.com/15871434">HUGE虎哥</a>，<a href="https://space.bilibili.com/473498779">吴奇老师的托口秀</a></p>
+  </li>
+  <li>写作：
+    <ul>
+      <li>学术讨论部分，我没有什么特别的积累，背一个最简单的框架，然后基本上是想到啥就写啥，就跟吵架似的。我感觉我遣词造句其实挺一般的，不过得分居然还不错。</li>
+      <li>听力总结部分，首先当然得听懂、记好。这里我和听力不同，会做尽可能多的笔记，并且听的时候就会大致想好要咋写。然后往模板里套。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>阅读和听力，个人都推荐大量刷题。可以使用小站托福或托福考满分这两个网站，没啥区别（好像小站上题目更新一点），都是免费资源就够了。写作的话，托福国外的官网好像有每日一题，AI 评分，可以做一下，或者自己用 AI 批改。</p>
+
+<p>最后提一句得罪人的话，因为得罪人所以只提一句：我自己当时是通过校内广告报了机构的班，个人感受是提升有限，不太推荐。言尽于此。</p>
+
+<p>至于 GRE 就不分享了，我考的自己也不满意，也不知道咋学。</p>
+
+<h1 id="申请中我踩的坑">申请中我踩的坑</h1>
+
+<ol>
+  <li>一些教授有自己的考量，只会给你提供有限份数的推荐信！最好是提前确认好，另外也要考虑推荐信的适配程度（推荐老师和目标项目的关系）。</li>
+  <li>一切申请流程，赶早不赶晚。至少提前一周提交。要准备好一张 visa 卡。</li>
+  <li>宜AI润色，忌AI写作，AI翻译也慎用。只要使用了AI工具，一定要人工核查一遍。</li>
+  <li>推荐使用 overleaf 上他人公开的 latex 模板制作简历，简历长度建议是一页。</li>
+</ol>
+
+<h1 id="其他申请相关的经验or想法">其他申请相关的经验or想法</h1>
+
+<ol>
+  <li>多方参考胜过相信权威；难度一直变化，经验总会失效；难度讲总体，结果讲个例；申请是多元函数，录取与否难预知；<strong>申请到再多，只能去一个</strong>；适合自己胜过难度更高；读研只是方法，读研并非目的。<a href="https://opencs.app/zen/">reference</a></li>
+  <li>国际形势变化不定，放平心态，留好后路。</li>
+</ol>
+
+<hr />
+
+<p>目前只想到这么多，就先写到这里。有想法建议，欢迎邮件讨论。</p>]]></content><author><name>DeerInForestovo</name></author><category term="article" /><summary type="html"><![CDATA[This article is particularly for Chinese students, so I will not provide English translation.]]></summary></entry></feed>
