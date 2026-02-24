@@ -198,7 +198,9 @@ Can we do...
 + Secrecy by sending $H(m)$?
     + It is secret, but it is not useful for the receiver to recover $m$.
 
-Birthday attack:
+Birthday Paradox:
++ Two same birthday: $p(n) = 1 - e^{-n(n-1)/2N}$
++ Same birthday as me: $q(n) = 1 - (1 - 1/N)^n$
 + To find a collision of a hash function with an output size of $n$ bits, an attacker only needs to compute $O(2^{n/2})$ hashes, which is much less than the $O(2^n)$ hashes needed for a brute-force attack.
 
 One-way Hash Chain:
